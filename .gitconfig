@@ -1,0 +1,32 @@
+[user]
+  name = Guilherme Balzana
+  email = gb637@cam.ac.uk
+
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+
+[core]
+  editor = /usr/bin/nvim
+
+[push]
+  default = current
+
+[branch]
+  autosetuprebase = always
+
+[alias]
+  co = checkout
+  ci = commit
+  cp = cherry-pick
+  st = status
+  br = !git --no-pager branch
+  re = rebase
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+  amend = commit --amend --no-edit
+  fap = fetch -ap
+  show = show --oneline
+
+[rebase]
+  autoStash = true

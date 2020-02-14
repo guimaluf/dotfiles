@@ -1,0 +1,225 @@
+# vim:filetype=i3
+
+set $mod Mod4
+set $alt Mod1
+set $wallpaper $HOME/.config/wallpapers
+set $terminal i3-sensible-terminal
+
+font pango:Inconsolata 14
+
+# use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec $terminal
+
+# kill focused window
+bindsym $alt+F4 kill
+
+# start dmenu (a program launcher)$
+bindsym $alt+F2 exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu_run -fn 'Inconsolata-17'"
+# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -fn 'Inconsolata-17'"
+bindsym $mod+d exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'Inconsolata 14'
+
+
+# file manager
+bindsym $mod+r exec pcmanfm
+
+# print screen
+set $scrot scrot -d1 -e 'xclip -selection clipboard -t image/png < $f' /tmp/screenshot-`date +%Y-%m-%d_%H:%M:%S`.png
+bindsym Print exec $scrot -u
+bindsym $mod+Print --release exec $scrot -s
+bindsym $mod+Shift+Print exec $scrot
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+shift+h move left
+bindsym $mod+shift+j move down
+bindsym $mod+shift+k move up
+bindsym $mod+shift+l move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+shift+Left move left
+bindsym $mod+shift+Down move down
+bindsym $mod+shift+Up move up
+bindsym $mod+shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+v split h
+
+# split in vertical orientation
+bindsym $mod+s split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+q layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $alt+shift+space floating toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+shift+1 move container to workspace 1
+bindsym $mod+shift+2 move container to workspace 2
+bindsym $mod+shift+3 move container to workspace 3
+bindsym $mod+shift+4 move container to workspace 4
+bindsym $mod+shift+5 move container to workspace 5
+bindsym $mod+shift+6 move container to workspace 6
+bindsym $mod+shift+7 move container to workspace 7
+bindsym $mod+shift+8 move container to workspace 8
+bindsym $mod+shift+9 move container to workspace 9
+bindsym $mod+shift+0 move container to workspace 10
+
+# reload the configuration file
+bindsym $mod+shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+shift+e exit
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+$alt+r mode "resize"
+
+bar {
+  position top
+  output primary
+  status_command /usr/bin/i3status
+}
+
+bar {
+  position top
+  output DP-1
+  tray_output none
+  status_command /usr/bin/i3status -c $HOME/.config/i3status/nonprimary.config
+}
+
+# next/previous workspace
+bindsym $alt+Tab focus right
+bindsym $alt+shift+Tab focus left
+bindsym $mod+Tab workspace back_and_forth
+
+# change focus between tiling / floating windows
+#bindsym $mod+space focus mode_toggle
+
+# lock screen with wallpaper (Ctrl+alt+l)
+bindsym $alt+control+l exec i3lock -t -i $wallpaper/*.png
+
+# pulse audio volume control
+set $pulse_sink `pacmd list-sinks | awk '/index/ {print $3}'`
+#
+bindsym XF86AudioPlay exec --no-startup-id /usr/bin/playerctl play-pause
+bindsym XF86AudioLowerVolume exec --no-startup-id /usr/bin/pactl set-sink-volume $pulse_sink -10%
+bindsym XF86AudioRaiseVolume exec --no-startup-id /usr/bin/pactl set-sink-volume $pulse_sink +10%
+bindsym XF86AudioMute exec --no-startup-id /usr/bin/pactl set-sink-mute $pulse_sink toggle
+
+## Brightness key bindings
+bindsym XF86MonBrightnessUp exec /usr/local/bin/brightness +5000
+bindsym XF86MonBrightnessDown exec /usr/local/bin/brightness  -5000
+
+bindsym XF86TouchpadToggle exec $HOME/.local/bin/touchpad_toggl
+
+# calculator
+bindsym XF86Calculator exec $terminal -e /usr/bin/bc
+
+bindsym $mod+b exec firefox
+bindsym $mod+shift+b exec google-chrome
+
+# workspace assignment (use "xprop")
+
+set $main_monitor DP-1
+set $other_monitor DP-0
+
+set $browser_workspace 2
+set $terminal_workspace 1
+
+workspace 1 output $other_monitor
+workspace 3 output $other_monitor
+workspace 5 output $other_monitor
+workspace 7 output $other_monitor
+workspace 9 output $other_monitor
+
+workspace 2 output $main_monitor
+workspace 4 output $main_monitor
+workspace 6 output $main_monitor
+workspace 8 output $main_monitor
+
+
+# In your i3 configuration file, you can autostart i3-msg like this:
+# (Note that those lines will quickly become long, so typically you would store
+#  them in a script with proper indentation.)
+# exec --no-startup-id "i3-msg 'workspace 1; append_layout $HOME/.config/i3/workspace-1.json'"
+assign [class="^firefox$"] $browser_workspace
+assign [class="^Google-chrome$"] $browser_workspace
+# temporary config to run script termos_de_uso
+# no_focus [class="Firefox"]
+# no_focus [class="^Google-chrome$"]
+# for_window [class="^Firefox$"] layout tabbed
+# for_window [class="^Google-chrome$"] layout tabbed
+
+assign [class="^URxvt$"] $terminal_workspace
+#for_window [class="^URxvt$"] layout tabbed
+assign [class="^Xterm$"] $terminal_workspace
+#for_window [class="Xterm$"] layout tabbed
+
+#assign [class="^Hexchat$"] $chat_workspace
+assign [class="^Franz$"] $chat_workspace
+
+#assign [class="^Spotify$"] $fun_workspace
+#assign [class="^Steam$"] $fun_workspace
+
+#Background image
+exec_always feh --bg-fill --randomize $wallpaper
+#exec "setxkbmap -layout us,br,cn -variant intl,,tib -option grp:win_space_toggle"
+exec_always xrandr --output DP-0 --mode 1920x1080 --pos 1280x0 --rotate normal --primary --output --mode 1280x1024--pos 0x0 --rotate normal
+
+#Start up programs
+exec parcellite
+exec firefox
+exec $terminal
+
