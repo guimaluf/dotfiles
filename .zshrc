@@ -46,9 +46,10 @@ source $ZSH/oh-my-zsh.sh
 autoload -U compinit && compinit
 
 # Customize to your needs...
-# bindkey '^R' history-incremental-search-backward
-# bindkey '^[OH' beginning-of-line
-# bindkey '^[OF' end-of-line
+bindkey '^R' history-incremental-search-backward
+bindkey '^[OH' beginning-of-line
+bindkey '^[OF' end-of-line
+bindkey '^U' backward-kill-line
 
 alias be='bundle exec'
 alias rss='rbenv shell system'
@@ -83,7 +84,7 @@ function osrc {
 [[ -s "/etc/profile.d/vte.sh" ]] && . "/etc/profile.d/vte.sh"
 
 eval $(keychain --eval --agents gpg,ssh id_rsa)
-eval "$(rbenv init -)"
+eval "$($HOME/.rbenv/bin/rbenv init -)"
 
 unset GREP_OPTIONS
 unset VIRTUAL_ENV_DISABLE_PROMPT
@@ -91,4 +92,4 @@ export EDITOR=/usr/bin/nvim
 export BC_ENV_ARGS=$HOME/.bcrc
 export PROMPT="%{$fg_bold[yellow]%}%T %{$reset_color%}${PROMPT}"
 export PASSWORD_STORE_DIR=$HOME/.password-store
-export PATH="$HOME/.local/bin:$HOME/.rbenv/bin:$HOME/.gem/ruby/2.6.0/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.rbenv/bin:$PATH"

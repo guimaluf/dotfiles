@@ -158,9 +158,14 @@ bindsym XF86AudioLowerVolume exec --no-startup-id /usr/bin/pactl set-sink-volume
 bindsym XF86AudioRaiseVolume exec --no-startup-id /usr/bin/pactl set-sink-volume $pulse_sink +10%
 bindsym XF86AudioMute exec --no-startup-id /usr/bin/pactl set-sink-mute $pulse_sink toggle
 
+bindsym $mod+F5 exec --no-startup-id /usr/bin/playerctl play-pause
+bindsym $mod+F6 exec --no-startup-id /usr/bin/pactl set-sink-volume $pulse_sink -10%
+bindsym $mod+F7 exec --no-startup-id /usr/bin/pactl set-sink-volume $pulse_sink +10%
+bindsym $mod+F8 exec --no-startup-id /usr/bin/pactl set-sink-mute $pulse_sink toggle
+
 ## Brightness key bindings
-bindsym XF86MonBrightnessUp exec /usr/local/bin/brightness +5000
-bindsym XF86MonBrightnessDown exec /usr/local/bin/brightness  -5000
+bindsym XF86MonBrightnessUp exec sudo /usr/bin/brightnessctl set +10%
+bindsym XF86MonBrightnessDown exec sudo /usr/bin/brightnessctl set -10%
 
 bindsym XF86TouchpadToggle exec $HOME/.local/bin/touchpad_toggl
 
@@ -175,6 +180,7 @@ bindsym $mod+shift+b exec google-chrome
 set $main_monitor DP-1
 set $other_monitor DP-0
 
+set $message_workspace 2
 set $browser_workspace 2
 set $terminal_workspace 1
 
@@ -202,6 +208,8 @@ assign [class="^Google-chrome$"] $browser_workspace
 # for_window [class="^Firefox$"] layout tabbed
 # for_window [class="^Google-chrome$"] layout tabbed
 
+assign [class="^Slack$"] $message_workspace
+
 assign [class="^URxvt$"] $terminal_workspace
 #for_window [class="^URxvt$"] layout tabbed
 assign [class="^Xterm$"] $terminal_workspace
@@ -215,11 +223,14 @@ assign [class="^Franz$"] $chat_workspace
 
 #Background image
 exec_always feh --bg-fill --randomize $wallpaper
+exec_always xss-lock -- i3lock -t -i $wallpaper/*.png
 #exec "setxkbmap -layout us,br,cn -variant intl,,tib -option grp:win_space_toggle"
-exec_always xrandr --output DP-0 --mode 1920x1080 --pos 1280x0 --rotate normal --primary --output --mode 1280x1024--pos 0x0 --rotate normal
+#exec_always xrandr --output DP-0 --mode 1920x1080 --pos 1280x0 --rotate normal --primary --output --mode 1280x1024--pos 0x0 --rotate normal
+exec_always nm-applet
+exec_always parcellite
 
 #Start up programs
-exec parcellite
 exec firefox
 exec $terminal
+exec slack
 
